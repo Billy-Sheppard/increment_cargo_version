@@ -39,6 +39,7 @@ with open ("Cargo.toml", "r") as cargo_toml:
         print("Incorrect argument. Cancelling...")
         sys.exit()
 
+    new_ver = str(major) + "." + str(minor) + "." + str(patch)                 # construct new version string
       
     new_file = file.replace(old_ver, new_ver)                                    # replace old version string
     cargo_file = open("Cargo.toml", "w")                                        # open cargo file for editing
