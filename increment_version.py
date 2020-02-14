@@ -31,7 +31,7 @@ with open ("Cargo.toml", "r") as cargo_toml:
         # print(new_patch)
     elif sys.argv[1] == '-v' or sys.argv[1] == "-version":                     # if version declared
         if re.match(regex, sys.argv[2]): 
-            new_ver = sys.argv[2]
+            set_ver = sys.argv[2]
         else :
             print("Version not SemVer. Cancelling...")
             sys.exit()
@@ -39,8 +39,12 @@ with open ("Cargo.toml", "r") as cargo_toml:
         print("Incorrect argument. Cancelling...")
         sys.exit()
 
-    new_ver = str(major) + "." + str(minor) + "." + str(patch)                 # construct new version string
-      
+    try: set_ver
+    except NameError:
+        new_ver = str(major) + "." + str(minor) + "." + str(patch)             # construct new version string
+    else:
+        new_ver = set_ver
+
     new_file = file.replace(old_ver, new_ver)                                    # replace old version string
     cargo_file = open("Cargo.toml", "w")                                        # open cargo file for editing
     cargo_file.write(new_file)                                                   # write new files contents
