@@ -42,6 +42,16 @@ try:
             else :
                 print("\033[91m[ERROR] \x1b[0mVersion not SemVer. Cancelling...")
                 sys.exit()
+        elif sys.argv[1] == '-h' or sys.argv[1] == "-help": 
+            print("\n\n\033[94m-- Increment Cargo.toml Version Help --\x1b[0m")    
+            print("\n\t-m: For major version increase")
+
+            print("\n\t-n: For minor version increase")
+
+            print("\n\t-p: For patch version increase")
+
+            print("\n\t-v [version]: For specific version increase")
+            print("\t\t• will only complete if a valid SemVer string (no quotes) is passed\n\n")
         else :
             print("\033[91m[ERROR] \x1b[0mIncorrect argument. Cancelling...")
             sys.exit()

@@ -4,6 +4,8 @@ A small python script for updating cargo.toml version numbers
 
 ## Usage
 
+    -h: For help
+
     -m: For major version increase
 
     -n: For minor version increase
