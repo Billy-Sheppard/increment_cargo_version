@@ -3,7 +3,7 @@ import sys
 import re
 import os
 
-print("\033[94m-- Increment Cargo.toml Version: v0.1.0 --")                        # print version
+print("\033[94m-- Increment Cargo.toml Version: v0.1.1 --")                        # print version
 print("\033[92m[INFO] \x1b[0mRunning git pull...")                                                       
 os.system('git --git-dir=' + sys.path[0] + '/.git pull')                           # update the git repo
 os.system('cd ' + os.getcwd())                                                     # change to original dir
@@ -58,16 +58,25 @@ try:
 
         try: set_ver
         except NameError:
-            new_ver = str(major) + "." + str(minor) + "." + str(patch)             # construct new version string
+            new_ver = str(major) + "." + str(minor) + "." + str(patch)                                   # construct new version string
         else:
             new_ver = set_ver
 
-        new_file = file.replace(old_ver, new_ver)                                    # replace old version string
-        cargo_file = open("Cargo.toml", "w")                                        # open cargo file for editing
-        cargo_file.write(new_file)                                                   # write new files contents
-        cargo_file.close()                                                          # close writer
+        new_file = file.replace(old_ver, new_ver)                                                          # replace old version string
+        cargo_file = open("Cargo.toml", "w")                                                              # open cargo file for editing
+        cargo_file.write(new_file)                                                                         # write new files contents
+        cargo_file.close()                                                                                # close writer
 
         print("\033[92m[INFO] \x1b[0mUpdated version string from: " + old_ver + " to: " + new_ver)       # log increment
+
+        if sys.argv[2] == "-t" or sys.argv[2] == "-tag" :                                                # if -t flag is second
+            os.system('cargo check')                                                                     # run cargo check to bump Cargo.lock
+            os.system('git add Cargo.toml Cargo.lock')                                                   # add both files to a new commit
+            os.system('git commit -m "v' + new_ver + '"')                                                # commit files with message v{version}
+            os.system('git tag "v' + new_ver + '"')                                                      # tag commit with v{version}
+            os.system('git push && git push --tags')                                                     # push commit and tags
+            print("\033[92m[INFO] \x1b[0mAdded Cargo.toml and Cargo.lock to a commit and tagged commit: v" + new_ver)
+
 except FileNotFoundError:
     print("\033[91m[ERROR] \x1b[0mNo Cargo.toml found!")
 except IndexError:

@@ -1,5 +1,5 @@
 [package]
-name = "Test Cargo.toml"
+name = "Test_Cargo_Toml"
 version = "0.1.0"
 authors = ["Test Tester <test@test.com>"]
 edition = "2018"
