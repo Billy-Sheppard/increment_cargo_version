@@ -62,7 +62,7 @@ try:
         else:
             new_ver = set_ver
 
-        new_file = file.replace(old_ver, new_verm, 1)                                                      # replace old version string
+        new_file = file.replace(old_ver, new_ver, 1)                                                      # replace old version string
         cargo_file = open("Cargo.toml", "w")                                                              # open cargo file for editing
         cargo_file.write(new_file)                                                                         # write new files contents
         cargo_file.close()                                                                                # close writer
