@@ -77,7 +77,7 @@ try:
             os.system('git push && git push --tags')                                                     # push commit and tags
             print("\033[92m[INFO] \x1b[0mAdded Cargo.toml and Cargo.lock to a commit and tagged commit: v" + new_ver)
 
-except FileNotFoundError: 
+except FileNotFoundError:
     try: 
         with open ("Version.toml", "r") as version_toml:
             regex = r"^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$"
@@ -138,18 +138,16 @@ except FileNotFoundError:
             version_file.close()                                                                              # close writer
 
             print("\033[92m[INFO] \x1b[0mUpdated version string from: " + old_ver + " to: " + new_ver)       # log increment
-
-            if sys.argv[2] == "-t" or sys.argv[2] == "-tag" :                                                # if -t flag is second
-                os.system('cargo check')                                                                     # run cargo check to bump Cargo.lock
-                os.system('git add Cargo.toml Cargo.lock')                                                   # add both files to a new commit
-                os.system('git commit -m "v' + new_ver + '"')                                                # commit files with message v{version}
-                os.system('git tag "v' + new_ver + '"')                                                      # tag commit with v{version}
-                os.system('git push && git push --tags')                                                     # push commit and tags
-                print("\033[92m[INFO] \x1b[0mAdded Cargo.toml and Cargo.lock to a commit and tagged commit: v" + new_ver)
+            if len(sys.argv) > 2 :
+                if (sys.argv[2] == "-t" or sys.argv[2] == "-tag") :                                          # if -t flag is second
+                    os.system('git add Version.toml')                                                        # add Version.toml to a new commit
+                    os.system('git commit -m "v' + new_ver + '"')                                            # commit files with message v{version}
+                    os.system('git tag "v' + new_ver + '"')                                                  # tag commit with v{version}
+                    os.system('git push && git push --tags')                                                 # push commit and tags
+                    print("\033[92m[INFO] \x1b[0mAdded Cargo.toml and Cargo.lock to a commit and tagged commit: v" + new_ver)
 
     except FileNotFoundError:
         print("\033[91m[ERROR] \x1b[0mNo Cargo.toml or Version.toml found!")
 
 except IndexError:
     print("\033[91m[ERROR] \x1b[0mNo argument passed!")
-
