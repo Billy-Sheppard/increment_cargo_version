@@ -82,7 +82,7 @@ except FileNotFoundError:
         with open ("Version.toml", "r") as version_toml:
             regex = r"^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$"
 
-            file = version_toml.read()                                                    # open file for reading
+            file = version_toml.read()                                                  # open file for reading
             ver_idx = file.find("version")                                               # find first occurrence of "version"
             ver_num_s = file.find("\"", ver_idx)                                         # find start of version number
             ver_num_e = file.find("\"", file.find("\"", ver_idx) + 1)                      # find end of version number
@@ -149,8 +149,6 @@ except FileNotFoundError:
 
     except FileNotFoundError:
         print("\033[91m[ERROR] \x1b[0mNo Cargo.toml or Version.toml found!")
-    except IndexError:
-        print("\033[91m[ERROR] \x1b[0mNo argument passed!")
 
 except IndexError:
     print("\033[91m[ERROR] \x1b[0mNo argument passed!")
