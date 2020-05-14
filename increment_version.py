@@ -9,7 +9,11 @@ os.system('git --git-dir=' + sys.path[0] + '/.git pull')                        
 os.system('cd ' + os.getcwd())                                                     # change to original dir
 
 try: 
-    with open ("Cargo.toml", "r") as cargo_toml:
+    if '-r' in sys.argv:                                                           # if -r present
+        folder = "rust/"                                                           # look in folder rust/
+    else:
+        folder = ""                                                                # else look where run
+    with open ((folder + "Cargo.toml"), "r") as cargo_toml:
         regex = r"^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$"
 
         file = cargo_toml.read()                                                    # open file for reading
@@ -24,25 +28,30 @@ try:
         patch = ver_num[ver_num.find(".", ver_num.find(".")+1)+1:]    
         old_ver = str(major) + "." + str(minor) + "." + str(patch)                 # record old version
 
-        if sys.argv[1] == '-m' or sys.argv[1] == '-major':                         # if major increase
+        if '-m' in sys.argv or '-major' in sys.argv:                               # if major increase
             major = int(major) + 1
             minor = 0
             patch = 0
             # print(new_major)
-        elif sys.argv[1] == '-n' or sys.argv[1] == '-minor':                       # if minor increase
+        elif '-n' in sys.argv or '-minor' in sys.argv:                             # if minor increase
             minor = int(minor) + 1
             patch = 0
             # print(new_minor)
-        elif sys.argv[1] == '-p' or sys.argv[1] == '-patch':                       # if patch increase
+        elif '-p' in sys.argv or '-patch' in sys.argv:                             # if patch increase
             patch = int(patch) + 1
             # print(new_patch)
-        elif sys.argv[1] == '-v' or sys.argv[1] == "-version":                     # if version declared
-            if re.match(regex, sys.argv[2]): 
-                set_ver = sys.argv[2]
+        elif '-v' in sys.argv or "-version" in sys.argv:                           # if version declared
+            try:
+                idx = sys.argv.index('-v')
+            except: 
+                idx = sys.argv.index('-version')
+
+            if re.match(regex, sys.argv[idx+1]): 
+                set_ver = sys.argv[idx+1]
             else :
                 print("\033[91m[ERROR] \x1b[0mVersion not SemVer. Cancelling...")
                 sys.exit()
-        elif sys.argv[1] == '-h' or sys.argv[1] == "-help": 
+        elif '-h' in sys.argv or "-help" in sys.argv: 
             print("\n\n\033[94m-- Increment Cargo.toml Version Help --\x1b[0m")    
             print("\n\t-m: For major version increase")
 
@@ -62,14 +71,14 @@ try:
         else:
             new_ver = set_ver
 
-        new_file = file.replace(old_ver, new_ver, 1)                                                      # replace old version string
+        new_file = file.replace(old_ver, new_ver, 1)                                                       # replace old version string
         cargo_file = open("Cargo.toml", "w")                                                              # open cargo file for editing
         cargo_file.write(new_file)                                                                         # write new files contents
         cargo_file.close()                                                                                # close writer
 
         print("\033[92m[INFO] \x1b[0mUpdated version string from: " + old_ver + " to: " + new_ver)       # log increment
 
-        if sys.argv[2] == "-t" or sys.argv[2] == "-tag" :                                                # if -t flag is second
+        if ("-t" in sys.argv or "-tag" in sys.argv) :                                                    # if -t flag is second
             os.system('cargo check')                                                                     # run cargo check to bump Cargo.lock
             os.system('git add Cargo.toml Cargo.lock')                                                   # add both files to a new commit
             os.system('git commit -m "v' + new_ver + '"')                                                # commit files with message v{version}
@@ -94,25 +103,30 @@ except FileNotFoundError:
             patch = ver_num[ver_num.find(".", ver_num.find(".")+1)+1:]    
             old_ver = str(major) + "." + str(minor) + "." + str(patch)                 # record old version
 
-            if sys.argv[1] == '-m' or sys.argv[1] == '-major':                         # if major increase
+            if '-m' in sys.argv or '-major' in sys.argv:                               # if major increase
                 major = int(major) + 1
                 minor = 0
                 patch = 0
                 # print(new_major)
-            elif sys.argv[1] == '-n' or sys.argv[1] == '-minor':                       # if minor increase
+            elif '-n' in sys.argv or '-minor' in sys.argv:                             # if minor increase
                 minor = int(minor) + 1
                 patch = 0
                 # print(new_minor)
-            elif sys.argv[1] == '-p' or sys.argv[1] == '-patch':                       # if patch increase
+            elif '-p' in sys.argv or '-patch' in sys.argv:                             # if patch increase
                 patch = int(patch) + 1
                 # print(new_patch)
-            elif sys.argv[1] == '-v' or sys.argv[1] == "-version":                     # if version declared
-                if re.match(regex, sys.argv[2]): 
-                    set_ver = sys.argv[2]
+            elif '-v' in sys.argv or "-version" in sys.argv:                           # if version declared
+                try:
+                    idx = sys.argv.index('-v')
+                except: 
+                    idx = sys.argv.index('-version')
+
+                if re.match(regex, sys.argv[idx+1]): 
+                    set_ver = sys.argv[idx+1]
                 else :
                     print("\033[91m[ERROR] \x1b[0mVersion not SemVer. Cancelling...")
                     sys.exit()
-            elif sys.argv[1] == '-h' or sys.argv[1] == "-help": 
+            elif sys.argv == '-h' or sys.argv == "-help": 
                 print("\n\n\033[94m-- Increment Cargo.toml Version Help --\x1b[0m")    
                 print("\n\t-m: For major version increase")
 
@@ -139,7 +153,7 @@ except FileNotFoundError:
 
             print("\033[92m[INFO] \x1b[0mUpdated version string from: " + old_ver + " to: " + new_ver)       # log increment
             if len(sys.argv) > 2 :
-                if (sys.argv[2] == "-t" or sys.argv[2] == "-tag") :                                          # if -t flag is second
+                if ("-t" in sys.argv or "-tag" in sys.argv) :                                                # if -t flag exists
                     os.system('git add Version.toml')                                                        # add Version.toml to a new commit
                     os.system('git commit -m "v' + new_ver + '"')                                            # commit files with message v{version}
                     os.system('git tag "v' + new_ver + '"')                                                  # tag commit with v{version}
