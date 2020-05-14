@@ -3,7 +3,7 @@ import sys
 import re
 import os
 
-print("\033[94m-- Increment Cargo.toml Version: v0.1.1 --")                        # print version
+print("\033[94m-- Increment Cargo.toml Version: v0.2.0 --")                        # print version
 print("\033[92m[INFO] \x1b[0mRunning git pull...")                                                       
 os.system('git --git-dir=' + sys.path[0] + '/.git pull')                           # update the git repo
 os.system('cd ' + os.getcwd())                                                     # change to original dir
