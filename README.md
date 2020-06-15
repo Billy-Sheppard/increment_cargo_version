@@ -16,4 +16,6 @@ A small python script for updating cargo.toml version numbers
 
     -v [version]: For specific version increase
             - will only complete if a valid SemVer string (no quotes) is passed
+
+    -vt: For using a Version.toml file instead of Cargo.toml
     

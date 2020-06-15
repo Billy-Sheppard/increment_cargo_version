@@ -13,7 +13,12 @@ try:
         folder = "rust/"                                                           # look in folder rust/
     else:
         folder = ""                                                                # else look where run
-    with open ((folder + "Cargo.toml"), "r") as cargo_toml:
+
+    if '-vt' in sys.argv:
+        file = "Version.toml"
+    else:
+        file = "Cargo.toml"
+    with open ((folder + file), "r") as cargo_toml:
         regex = r"^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$"
 
         file = cargo_toml.read()                                                    # open file for reading
