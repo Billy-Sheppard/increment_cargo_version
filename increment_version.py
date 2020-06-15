@@ -15,10 +15,10 @@ try:
         folder = ""                                                                # else look where run
 
     if '-vt' in sys.argv:
-        file = "Version.toml"
+        file_n = "Version.toml"
     else:
-        file = "Cargo.toml"
-    with open ((folder + file), "r") as cargo_toml:
+        file_n = "Cargo.toml"
+    with open ((folder + file_n), "r") as cargo_toml:
         regex = r"^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$"
 
         file = cargo_toml.read()                                                    # open file for reading
@@ -77,7 +77,7 @@ try:
             new_ver = set_ver
 
         new_file = file.replace(old_ver, new_ver, 1)                                                       # replace old version string
-        cargo_file = open(folder + file, "w")                                                              # open cargo file for editing
+        cargo_file = open(folder + file_n, "w")                                                              # open cargo file for editing
         cargo_file.write(new_file)                                                                         # write new files contents
         cargo_file.close()                                                                                # close writer
 
