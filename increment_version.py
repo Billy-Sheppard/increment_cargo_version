@@ -3,7 +3,7 @@ import sys
 import re
 import os
 
-print("\033[94m-- Increment Cargo.toml Version: v0.2.0 --")                        # print version
+print("\033[94m-- Increment Cargo.toml Version: v0.2.2 --")                        # print version
 print("\033[92m[INFO] \x1b[0mRunning git pull...")                                                       
 os.system('git --git-dir=' + sys.path[0] + '/.git pull')                           # update the git repo
 os.system('cd ' + os.getcwd())                                                     # change to original dir
@@ -77,7 +77,7 @@ try:
             new_ver = set_ver
 
         new_file = file.replace(old_ver, new_ver, 1)                                                       # replace old version string
-        cargo_file = open(folder + "Cargo.toml", "w")                                                     # open cargo file for editing
+        cargo_file = open(folder + file, "w")                                                              # open cargo file for editing
         cargo_file.write(new_file)                                                                         # write new files contents
         cargo_file.close()                                                                                # close writer
 
@@ -86,6 +86,8 @@ try:
         if ("-t" in sys.argv or "-tag" in sys.argv) :                                                    # if -t flag is second
             os.system('cargo check')                                                                     # run cargo check to bump Cargo.lock
             os.system('git add Cargo.toml Cargo.lock')                                                   # add both files to a new commit
+            if '-vt' in sys.argv:
+                os.system('git add Version.toml')
             if '-r' in sys.argv:
                 os.system('git add rust/Cargo.toml rust/Cargo.lock')
             os.system('git commit -m "v' + new_ver + '"')                                                # commit files with message v{version}
