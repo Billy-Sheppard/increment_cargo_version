@@ -1,5 +1,5 @@
 # Increment Cargo Version
-A small python script for updating cargo.toml version numbers
+A Rust Utility for updating Cargo.toml or Version.toml files
 
 
 ## Usage
@@ -12,10 +12,11 @@ A small python script for updating cargo.toml version numbers
 
     -p: For patch version increase
 
-    -r: For rust source in subfolder called "rust/"
+    -sf [subfolder]: For .toml in a subfolder
 
     -v [version]: For specific version increase
             - will only complete if a valid SemVer string (no quotes) is passed
 
-    -vt: For using a Version.toml file instead of Cargo.toml
+    -a: For using a Version.toml file instead of Cargo.toml
     
+    -t: For automatically tagging with the format v{version}, committing, and pushing to git remote
